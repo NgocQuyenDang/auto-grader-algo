@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LeetCode Mini - Login</title>
+    <link rel="icon" href="/mainlogo.jpg">
+    <style>
+        /* Reset cơ bản */
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+
+        body {
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            /* Màu nền tối sâu */
+            background: #0f0f0f;
+        }
+
+        .login-container {
+            /* Màu nền xám cực đậm, có độ trong suốt nhẹ */
+            background: #1a1a1a;
+            padding: 40px;
+            border-radius: 16px;
+            /* Đổ bóng mịn và viền nhẹ tạo độ nổi khối (Neumorphism nhẹ) */
+            box-shadow: 0 15px 35px rgba(0,0,0,0.5);
+            border: 1px solid #333;
+            width: 380px;
+            text-align: center;
+        }
+
+        .login-container h2 {
+            margin-bottom: 30px;
+            color: #ffffff;
+            letter-spacing: 2px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .login-container input {
+            width: 100%;
+            padding: 14px 15px;
+            margin: 12px 0;
+            border-radius: 8px;
+            /* Input tối màu */
+            background: #252525;
+            border: 1px solid #444;
+            color: #fff;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        .login-container input:focus {
+            border-color: #ffa116; /* Màu vàng cam đặc trưng của LeetCode */
+            background: #2a2a2a;
+            box-shadow: 0 0 8px rgba(255, 161, 22, 0.2);
+        }
+
+        .login-container button {
+            width: 100%;
+            padding: 14px;
+            margin-top: 20px;
+            border: none;
+            border-radius: 8px;
+            /* Nút màu cam/vàng tạo điểm nhấn mạnh trên nền đen */
+            background: #ffa116;
+            color: #000;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .login-container button:hover {
+            background: #ffb84d;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 161, 22, 0.3);
+        }
+
+        .error-message {
+            color: #ff4d4d;
+            margin-top: 15px;
+            font-size: 14px;
+            display: none;
+            background: rgba(255, 77, 77, 0.1);
+            padding: 8px;
+            border-radius: 5px;
+        }
+
+        .login-footer {
+            margin-top: 25px;
+            font-size: 14px;
+            color: #888;
+        }
+
+        .login-footer a {
+            color: #ffa116;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .login-footer a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+<div class="login-container">
+    <h2>LeetCode Mini</h2>
+    <form id="loginForm" method="POST" action="/login">
+        <input type="text" name="username" placeholder="Username" required>
+        <input type="password" name="password" placeholder="Password" required>
+        <button type="submit">Log In</button>
+        <div class="error-message" id="errorMsg">Invalid username or password</div>
+    </form>
+    <div class="login-footer">
+        Don't have an account? <a href="register.html">Register</a>
+    </div>
+</div>
+
+<script>
+    // Ví dụ: hiển thị error message nếu login fail
+    const urlParams = new URLSearchParams(window.location.search);
+    if(urlParams.get('error')) {
+        document.getElementById('errorMsg').style.display = 'block';
+    }
+</script>
+</body>
+</html>
