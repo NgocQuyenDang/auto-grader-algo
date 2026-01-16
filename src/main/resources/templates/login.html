@@ -14,27 +14,27 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            /* Màu nền tối sâu */
-            background: #0f0f0f;
+            /* Nền trắng xám nhạt */
+            background: #f0f2f5;
         }
 
         .login-container {
-            /* Màu nền xám cực đậm, có độ trong suốt nhẹ */
-            background: #1a1a1a;
+            /* Nền trắng thuần khiết */
+            background: #ffffff;
             padding: 40px;
             border-radius: 16px;
-            /* Đổ bóng mịn và viền nhẹ tạo độ nổi khối (Neumorphism nhẹ) */
-            box-shadow: 0 15px 35px rgba(0,0,0,0.5);
-            border: 1px solid #333;
+            /* Đổ bóng mềm mại tạo chiều sâu */
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+            border: 1px solid #e0e0e0;
             width: 380px;
             text-align: center;
         }
 
         .login-container h2 {
             margin-bottom: 30px;
-            color: #ffffff;
-            letter-spacing: 2px;
-            font-weight: 600;
+            color: #2e7d32; /* Xanh lá cây đậm chuyên nghiệp */
+            letter-spacing: 1px;
+            font-weight: 700;
             text-transform: uppercase;
         }
 
@@ -43,18 +43,18 @@
             padding: 14px 15px;
             margin: 12px 0;
             border-radius: 8px;
-            /* Input tối màu */
-            background: #252525;
-            border: 1px solid #444;
-            color: #fff;
+            /* Input sáng màu */
+            background: #f9f9f9;
+            border: 1px solid #ddd;
+            color: #333;
             outline: none;
             transition: all 0.3s ease;
         }
 
         .login-container input:focus {
-            border-color: #ffa116; /* Màu vàng cam đặc trưng của LeetCode */
-            background: #2a2a2a;
-            box-shadow: 0 0 8px rgba(255, 161, 22, 0.2);
+            border-color: #4caf50; /* Xanh lá tươi khi focus */
+            background: #ffffff;
+            box-shadow: 0 0 8px rgba(76, 175, 80, 0.2);
         }
 
         .login-container button {
@@ -63,9 +63,9 @@
             margin-top: 20px;
             border: none;
             border-radius: 8px;
-            /* Nút màu cam/vàng tạo điểm nhấn mạnh trên nền đen */
-            background: #ffa116;
-            color: #000;
+            /* Nút xanh lá cây làm điểm nhấn chủ đạo */
+            background: #4caf50;
+            color: #ffffff;
             font-size: 16px;
             font-weight: bold;
             cursor: pointer;
@@ -73,35 +73,37 @@
         }
 
         .login-container button:hover {
-            background: #ffb84d;
+            background: #43a047;
             transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(255, 161, 22, 0.3);
+            box-shadow: 0 5px 15px rgba(76, 175, 80, 0.3);
         }
 
         .error-message {
-            color: #ff4d4d;
+            color: #d32f2f;
             margin-top: 15px;
             font-size: 14px;
             display: none;
-            background: rgba(255, 77, 77, 0.1);
+            background: rgba(211, 47, 47, 0.05);
             padding: 8px;
             border-radius: 5px;
+            border: 1px solid rgba(211, 47, 47, 0.1);
         }
 
         .login-footer {
             margin-top: 25px;
             font-size: 14px;
-            color: #888;
+            color: #666;
         }
 
         .login-footer a {
-            color: #ffa116;
+            color: #2e7d32;
             text-decoration: none;
-            font-weight: 500;
+            font-weight: 600;
         }
 
         .login-footer a:hover {
             text-decoration: underline;
+            color: #1b5e20;
         }
     </style>
 </head>
@@ -115,12 +117,11 @@
         <div class="error-message" id="errorMsg">Invalid username or password</div>
     </form>
     <div class="login-footer">
-        Don't have an account? <a href="register.html">Register</a>
+        Don't have an account? <a href="/register">Register</a>
     </div>
 </div>
 
 <script>
-    // Ví dụ: hiển thị error message nếu login fail
     const urlParams = new URLSearchParams(window.location.search);
     if(urlParams.get('error')) {
         document.getElementById('errorMsg').style.display = 'block';

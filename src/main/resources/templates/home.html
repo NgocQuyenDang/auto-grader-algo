@@ -7,44 +7,61 @@
     <link rel="icon" href="/mainlogo.jpg">
     <style>
         /* Reset & Base */
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', 'Segoe UI', sans-serif; }
 
         body {
-            background-color: #0a0a0a; /* Đen sâu */
-            color: #ffffff;
+            background-color: #f8fafc; /* Nền trắng xám nhạt hiện đại */
+            color: #1a1a1a;
             min-height: 100vh;
             display: flex;
             flex-direction: column;
         }
 
-        /* Navbar tối giản */
+        /* Navbar Xanh Trắng */
         nav {
             height: 70px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 0 40px;
-            background: #111;
-            border-bottom: 1px solid #222;
+            padding: 0 60px;
+            background: #ffffff;
+            border-bottom: 1px solid #e2e8f0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
         }
 
         .logo {
-            font-size: 20px;
-            font-weight: bold;
-            color: #ffa116; /* Màu cam LeetCode */
-            letter-spacing: 1px;
+            font-size: 22px;
+            font-weight: 800;
+            color: #2e7d32; /* Xanh lá chủ đạo */
+            letter-spacing: -0.5px;
+        }
+
+        .logo span {
+            color: #1a1a1a;
+            font-weight: 400;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
         }
 
         .nav-links a {
-            color: #888;
+            color: #64748b;
             text-decoration: none;
-            margin-left: 25px;
-            font-size: 14px;
-            transition: 0.3s;
+            margin-left: 35px;
+            font-size: 15px;
+            font-weight: 500;
+            transition: 0.3s ease;
         }
 
         .nav-links a:hover {
-            color: #fff;
+            color: #2e7d32;
+        }
+
+        /* Highlight cho link hiện tại (Ví dụ: Profile hoặc Logout) */
+        .nav-links a.active {
+            color: #2e7d32;
         }
 
         /* Vùng nội dung trống */
@@ -56,33 +73,49 @@
             position: relative;
         }
 
-        /* Một hiệu ứng mờ ảo ở giữa trang cho bớt đơn điệu */
+        /* Hiệu ứng mờ ảo màu xanh lá nhạt */
         .content-area::before {
             content: "";
             position: absolute;
-            width: 300px;
-            height: 300px;
-            background: radial-gradient(circle, rgba(255, 161, 22, 0.05) 0%, transparent 70%);
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(76, 175, 80, 0.08) 0%, transparent 70%);
             pointer-events: none;
         }
 
         .placeholder-text {
-            color: #333;
-            font-size: 1.2rem;
+            color: #cbd5e1;
+            font-size: 1.5rem;
+            font-weight: 700;
             text-transform: uppercase;
-            letter-spacing: 5px;
+            letter-spacing: 8px;
             user-select: none;
+            z-index: 1;
+        }
+
+        /* Nút phụ trợ nếu cần */
+        .logout-btn {
+            border: 1px solid #e2e8f0;
+            padding: 8px 18px;
+            border-radius: 8px;
+            transition: all 0.3s;
+        }
+
+        .logout-btn:hover {
+            background: #fff1f2;
+            color: #e11d48 !important;
+            border-color: #fda4af;
         }
     </style>
 </head>
 <body>
 
 <nav>
-    <div class="logo">LEETCODE <span style="color: #fff;">MINI</span></div>
+    <div class="logo">LEETCODE <span>MINI</span></div>
     <div class="nav-links">
-        <a href="#">Problems</a>
+        <a href="/problems">Problems</a>
         <a href="#">Profile</a>
-        <a href="/login">Logout</a>
+        <a href="/logout" class="logout-btn">Logout</a>
     </div>
 </nav>
 

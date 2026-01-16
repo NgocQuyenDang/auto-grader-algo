@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Problems - Web Judge System</title>
+    <link rel="icon" href="/mainlogo.jpg">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #f1f1f1; }
+        ::-webkit-scrollbar-thumb { background: #10b981; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: #059669; }
+    </style>
+</head>
+<body class="bg-gray-50 text-slate-800">
+
+<div class="flex min-h-screen">
+    <aside class="w-64 bg-emerald-900 text-white p-6 hidden lg:block shadow-xl">
+        <div class="text-2xl font-bold mb-10 flex items-center gap-3">
+            <div class="w-8 h-8 bg-emerald-500 rounded-md shadow-lg shadow-emerald-500/50"></div>
+            <span>WebJudge</span>
+        </div>
+
+        <nav class="space-y-2">
+            <a th:href="@{/problems}" class="flex items-center gap-3 p-3 rounded-lg bg-emerald-600 text-white shadow-sm font-medium">
+                <i class="fas fa-list w-5"></i> Danh sách bài
+            </a>
+            <a href="#" class="flex items-center gap-3 p-3 rounded-lg hover:bg-emerald-800 text-emerald-100 transition">
+                <i class="fas fa-history w-5"></i> Lịch sử nộp
+            </a>
+            <a href="#" class="flex items-center gap-3 p-3 rounded-lg hover:bg-emerald-800 text-emerald-100 transition">
+                <i class="fas fa-chart-line w-5"></i> Bảng xếp hạng
+            </a>
+            <a href="#" class="flex items-center gap-3 p-3 rounded-lg hover:bg-emerald-800 text-emerald-100 transition border-t border-emerald-800 pt-5 mt-5">
+                <i class="fas fa-user w-5"></i> Tài khoản
+            </a>
+        </nav>
+    </aside>
+
+    <main class="flex-1 flex flex-col">
+        <header class="bg-white border-b border-gray-200 h-16 flex items-center justify-between px-8 sticky top-0 z-10">
+            <h2 class="font-semibold text-lg text-emerald-800">Trang chủ / Danh sách bài tập</h2>
+
+            <div class="flex items-center gap-6">
+                <a th:if="${session.user == 'admin'}"
+                   th:href="@{/admin/add-problem}"
+                   class="flex items-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-lg text-sm font-bold transition transform hover:scale-105 shadow-md shadow-emerald-100">
+                    <i class="fas fa-plus-circle"></i> Đăng bài tập
+                </a>
+
+                <div class="flex items-center gap-3 border-l pl-6 border-gray-100">
+                    <div class="text-right">
+                        <p class="text-[10px] text-gray-400 uppercase font-bold tracking-wider">Trạng thái</p>
+                        <p class="text-sm font-bold text-emerald-600"
+                           th:text="${session.user != null ? session.user : 'Khách'}">Username</p>
+                    </div>
+                    <div class="w-10 h-10 bg-emerald-100 border-2 border-emerald-200 rounded-full flex items-center justify-center text-emerald-700 font-black shadow-inner">
+                        <span th:text="${session.user != null ? #strings.substring(session.user,0,1).toUpperCase() : 'G'}">U</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <div class="p-8">
+            <div class="max-w-5xl mx-auto">
+
+                <div class="flex justify-between items-end mb-10">
+                    <div>
+                        <h1 class="text-3xl font-extrabold text-slate-900 tracking-tight">Kho bài tập</h1>
+                        <div class="h-1.5 w-20 bg-emerald-500 mt-2 rounded-full"></div>
+                    </div>
+                    <p class="text-slate-400 text-sm italic" th:if="${problems != null}" th:text="'Tổng số: ' + ${problems.size()} + ' bài tập'"></p>
+                </div>
+
+                <div th:if="${problems != null and !problems.isEmpty()}" class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+                    <table class="w-full text-left">
+                        <thead class="bg-slate-50 border-b border-gray-100">
+                        <tr>
+                            <th class="p-4 font-bold text-slate-600 text-sm w-20">ID</th>
+                            <th class="p-4 font-bold text-slate-600 text-sm">Tên bài tập</th>
+                            <th class="p-4 font-bold text-slate-600 text-sm">Chủ đề</th>
+                            <th class="p-4 font-bold text-slate-600 text-sm text-center">Thao tác</th>
+                        </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-50">
+                        <tr th:each="p : ${problems}" class="hover:bg-emerald-50/30 transition">
+                            <td class="p-4 font-mono text-emerald-700" th:text="${p.id}">1</td>
+                            <td class="p-4 font-semibold text-slate-800" th:text="${p.title}">Ví dụ bài tập</td>
+                            <td class="p-4">
+                                <span class="px-2 py-1 bg-emerald-50 text-emerald-600 text-[10px] font-bold rounded uppercase border border-emerald-100" th:text="${p.category}">Math</span>
+                            </td>
+                            <td class="p-4 text-center">
+                                <a th:href="@{/problem/{id}(id=${p.id})}" class="text-emerald-600 hover:text-emerald-800 font-bold text-sm">Làm bài <i class="fas fa-chevron-right ml-1"></i></a>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div th:if="${problems == null or problems.isEmpty()}"
+                     class="bg-white border-2 border-dashed border-emerald-100 rounded-3xl p-20 flex flex-col items-center justify-center text-center">
+                    <div class="w-20 h-20 bg-emerald-50 rounded-full flex items-center justify-center mb-4">
+                        <i class="fas fa-folder-open text-emerald-300 text-3xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold text-emerald-800">Dữ liệu đang được cập nhật</h3>
+                    <p class="text-gray-400 mt-2 max-w-sm">Danh sách các bài tập lập trình sẽ được hiển thị tại đây sau khi bạn đăng tải lên hệ thống.</p>
+                </div>
+
+            </div>
+        </div>
+    </main>
+</div>
+
+</body>
+</html>

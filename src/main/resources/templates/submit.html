@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${problem.title} + ' | Java Editor'">Java Professional Editor</title>
+
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.44.0/min/vs/loader.min.js"></script>
+
+    <style>
+        :root { --editor-bg: #1e1e1e; }
+        body { margin: 0; overflow: hidden; background: #0f172a; font-family: sans-serif; }
+
+        /* Container chính chiếm toàn màn hình */
+        .app-container { height: 100vh; display: flex; flex-direction: column; }
+
+        /* Editor container tối ưu */
+        #editorContainer {
+            flex-grow: 1;
+            width: 100%;
+            outline: none;
+        }
+
+        /* Hiệu ứng loading cho editor */
+        .editor-loading {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--editor-bg);
+            color: #4b5563;
+            height: 100%;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="app-container">
+    <header class="h-12 bg-[#1e293b] border-b border-slate-700 flex items-center justify-between px-6 flex-shrink-0">
+        <div class="flex items-center gap-3">
+            <i class="fab fa-java text-orange-500 text-xl"></i>
+            <span class="font-bold text-slate-200 text-sm" th:text="${problem.title}">Main.java</span>
+        </div>
+        <div class="flex items-center gap-4">
+            <a th:href="@{/problems}" class="text-xs text-slate-400 hover:text-white transition">Thoát</a>
+            <button onclick="handleSubmit()" class="bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold px-4 py-1.5 rounded transition active:scale-95">
+                NỘP BÀI (Ctrl + S)
+            </button>
+        </div>
+    </header>
+
+    <div class="flex flex-1 overflow-hidden">
+        <aside class="w-1/3 border-r border-slate-700 bg-[#0f172a] overflow-y-auto p-6 hidden md:block">
+            <h2 class="text-white font-bold mb-4 flex items-center gap-2 text-sm uppercase tracking-wider text-slate-400">
+                <i class="fas fa-info-circle"></i> Đề bài
+            </h2>
+            <div class="text-slate-300 text-sm leading-relaxed whitespace-pre-line" th:text="${problem.description}">
+                Mô tả bài toán...
+            </div>
+        </aside>
+
+        <main class="flex-1 flex flex-col bg-[--editor-bg]">
+            <div id="editorContainer">
+                <div class="editor-loading">
+                    <i class="fas fa-circle-notch fa-spin mr-2"></i> Đang khởi tạo môi trường Java...
+                </div>
+            </div>
+
+            <div class="h-6 bg-[#007acc] flex items-center px-3 justify-between text-[11px] text-white">
+                <div class="flex items-center gap-4">
+                    <span><i class="fas fa-check-double mr-1"></i> Ready</span>
+                    <span>UTF-8</span>
+                </div>
+                <div class="font-mono">Java / JDK 17</div>
+            </div>
+        </main>
+    </div>
+</div>
+
+<form id="submitForm" th:action="@{/problem/{id}/submit(id=${problem.id})}" method="post" class="hidden">
+    <textarea name="sourceCode" id="hiddenSourceCode"></textarea>
+    <input type="hidden" name="languageId" value="62">
+</form>
+
+<script>
+    let editor;
+
+    require.config({ paths: { vs: 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.44.0/min/vs' } });
+
+    require(['vs/editor/editor.main'], function () {
+        // Cấu hình ngôn ngữ Java nâng cao
+        editor = monaco.editor.create(document.getElementById('editorContainer'), {
+            value: [
+                'import java.util.*;',
+                '',
+                'public class Main {',
+                '    public static void main(String[] args) {',
+                '        Scanner sc = new Scanner(System.in);',
+                '        // Nhập code tại đây...',
+                '        ',
+                '    }',
+                '}'
+            ].join('\n'),
+            language: 'java',
+            theme: 'vs-dark',
+
+            // Cấu hình tăng trải nghiệm nhập liệu:
+            fontSize: 16,
+            fontFamily: "'JetBrains Mono', 'Fira Code', monospace",
+            fontLigatures: true,
+            automaticLayout: true,          // Tự động resize khi cửa sổ thay đổi
+            scrollBeyondLastLine: false,    // Không cuộn quá dòng cuối
+            minimap: { enabled: false },    // Tắt minimap cho đỡ rối
+            cursorSmoothCaretAnimation: "on", // Con trỏ di chuyển mượt
+            cursorBlinking: "expand",       // Hiệu ứng nháy con trỏ đẹp hơn
+            lineNumbersMinChars: 3,
+            wordWrap: "on",
+            bracketPairColorization: { enabled: true }, // Đổi màu các cặp ngoặc
+            suggestOnTriggerCharacters: true,
+            acceptSuggestionOnEnter: "on",
+            padding: { top: 16, bottom: 16 }
+        });
+
+        // Xóa màn hình loading
+        document.querySelector('.editor-loading').style.display = 'none';
+
+        // Phím tắt Ctrl + S để nộp bài
+        editor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyCode.KeyS, function() {
+            handleSubmit();
+        });
+    });
+
+    function handleSubmit() {
+        const code = editor.getValue();
+        if (code.trim().length < 10) {
+            alert("Code quá ngắn!");
+            return;
+        }
+        document.getElementById('hiddenSourceCode').value = code;
+        document.getElementById('submitForm').submit();
+    }
+</script>
+
+</body>
+</html>
