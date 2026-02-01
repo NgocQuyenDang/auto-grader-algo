@@ -3,8 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LeetCode Mini - Login</title>
+    <title>Học code - Đăng nhập</title>
     <link rel="icon" href="/mainlogo.jpg">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         /* Reset cơ bản */
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
@@ -14,47 +15,59 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            /* Nền trắng xám nhạt */
-            background: #f0f2f5;
+            /* Nền xám nhạt giống trang Problems */
+            background: #f8fafc;
         }
 
         .login-container {
-            /* Nền trắng thuần khiết */
             background: #ffffff;
             padding: 40px;
-            border-radius: 16px;
-            /* Đổ bóng mềm mại tạo chiều sâu */
-            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
-            border: 1px solid #e0e0e0;
-            width: 380px;
+            border-radius: 20px; /* Bo góc tròn hơn cho hiện đại */
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            border: 1px solid #e2e8f0;
+            width: 400px;
             text-align: center;
         }
 
-        .login-container h2 {
+        /* Logo giả lập giống Sidebar */
+        .brand-logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
             margin-bottom: 30px;
-            color: #2e7d32; /* Xanh lá cây đậm chuyên nghiệp */
-            letter-spacing: 1px;
-            font-weight: 700;
-            text-transform: uppercase;
+        }
+
+        .logo-box {
+            width: 32px;
+            height: 32px;
+            background: #10b981; /* Emerald 500 */
+            border-radius: 6px;
+            box-shadow: 0 4px 6px -1px rgba(16, 185, 129, 0.4);
+        }
+
+        .login-container h2 {
+            color: #064e3b; /* Emerald 900 */
+            font-size: 24px;
+            font-weight: 800;
+            letter-spacing: -0.5px;
         }
 
         .login-container input {
             width: 100%;
             padding: 14px 15px;
-            margin: 12px 0;
-            border-radius: 8px;
-            /* Input sáng màu */
-            background: #f9f9f9;
-            border: 1px solid #ddd;
-            color: #333;
+            margin: 10px 0;
+            border-radius: 10px;
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            color: #1e293b;
             outline: none;
-            transition: all 0.3s ease;
+            transition: all 0.2s ease;
         }
 
         .login-container input:focus {
-            border-color: #4caf50; /* Xanh lá tươi khi focus */
-            background: #ffffff;
-            box-shadow: 0 0 8px rgba(76, 175, 80, 0.2);
+            border-color: #10b981; /* Emerald 500 */
+            box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
         }
 
         .login-container button {
@@ -62,62 +75,71 @@
             padding: 14px;
             margin-top: 20px;
             border: none;
-            border-radius: 8px;
-            /* Nút xanh lá cây làm điểm nhấn chủ đạo */
-            background: #4caf50;
+            border-radius: 10px;
+            /* Gradient xanh giống nút Đăng bài tập */
+            background: #059669;
             color: #ffffff;
             font-size: 16px;
-            font-weight: bold;
+            font-weight: 700;
             cursor: pointer;
-            transition: 0.3s;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px -1px rgba(5, 150, 105, 0.2);
         }
 
         .login-container button:hover {
-            background: #43a047;
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(76, 175, 80, 0.3);
+            background: #047857;
+            transform: translateY(-1px);
+            box-shadow: 0 10px 15px -3px rgba(5, 150, 105, 0.3);
         }
 
         .error-message {
-            color: #d32f2f;
+            color: #ef4444;
             margin-top: 15px;
-            font-size: 14px;
+            font-size: 13px;
             display: none;
-            background: rgba(211, 47, 47, 0.05);
-            padding: 8px;
-            border-radius: 5px;
-            border: 1px solid rgba(211, 47, 47, 0.1);
+            background: #fef2f2;
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid #fee2e2;
         }
 
         .login-footer {
-            margin-top: 25px;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-t: 1px solid #f1f5f9;
             font-size: 14px;
-            color: #666;
+            color: #64748b;
         }
 
         .login-footer a {
-            color: #2e7d32;
+            color: #059669;
             text-decoration: none;
-            font-weight: 600;
+            font-weight: 700;
         }
 
         .login-footer a:hover {
-            text-decoration: underline;
-            color: #1b5e20;
+            color: #065f46;
         }
     </style>
 </head>
 <body>
 <div class="login-container">
-    <h2>LeetCode Mini</h2>
+    <div class="brand-logo">
+        <div class="logo-box"></div>
+        <h2>Học code</h2>
+    </div>
+
     <form id="loginForm" method="POST" action="/login">
-        <input type="text" name="username" placeholder="Username" required>
-        <input type="password" name="password" placeholder="Password" required>
-        <button type="submit">Log In</button>
-        <div class="error-message" id="errorMsg">Invalid username or password</div>
+        <input type="text" name="username" placeholder="Tên đăng nhập" required>
+        <input type="password" name="password" placeholder="Mật khẩu" required>
+        <button type="submit">Đăng nhập</button>
+        <div class="error-message" id="errorMsg">
+            <i class="fas fa-exclamation-circle"></i> Sai tên đăng nhập hoặc mật khẩu
+        </div>
     </form>
+
     <div class="login-footer">
-        Don't have an account? <a href="/register">Register</a>
+        Chưa có tài khoản? <a href="/register">Đăng ký ngay</a>
     </div>
 </div>
 

@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Kết quả nộp bài | WebJudge</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+
+<body class="bg-slate-100 min-h-screen text-slate-800">
+
+<!-- HEADER -->
+<header class="h-14 bg-white border-b flex items-center justify-between px-8">
+    <span class="font-black text-emerald-600 text-lg">WebJudge</span>
+    <a th:href="@{/problems}" class="text-sm text-slate-500 hover:text-emerald-600">
+        Danh sách bài
+    </a>
+</header>
+
+<!-- MAIN -->
+<main class="max-w-4xl mx-auto p-8">
+
+<!--    &lt;!&ndash; STATUS CARD &ndash;&gt;-->
+<!--    <div class="bg-white rounded-xl shadow p-8 flex items-center gap-6">-->
+
+<!--        &lt;!&ndash; ICON &ndash;&gt;-->
+<!--        <div-->
+<!--                th:class="${submission.status == 'Accepted'-->
+<!--              ? 'bg-emerald-100 text-emerald-600'-->
+<!--              : 'bg-rose-100 text-rose-600'}"-->
+<!--                class="w-20 h-20 rounded-full flex items-center justify-center text-3xl">-->
+<!--            <i th:class="${submission.status == 'Accepted'-->
+<!--                ? 'fas fa-check'-->
+<!--                : 'fas fa-times'}"></i>-->
+<!--        </div>-->
+
+<!--        &lt;!&ndash; INFO &ndash;&gt;-->
+<!--        <div class="flex-1">-->
+<!--            <h1 class="text-3xl font-black"-->
+<!--                th:text="${submission.status}"-->
+<!--                th:classappend="${submission.status == 'Accepted'-->
+<!--                  ? ' text-emerald-600'-->
+<!--                  : ' text-rose-600'}">-->
+<!--                Status-->
+<!--            </h1>-->
+
+<!--            <p class="text-slate-500 mt-1">-->
+<!--                Bài:-->
+<!--                <span class="font-bold text-slate-800"-->
+<!--                      th:text="${submission.problem.title}">-->
+<!--                    Tên bài-->
+<!--                </span>-->
+<!--            </p>-->
+
+<!--            <p class="text-sm text-slate-400 mt-1">-->
+<!--                Submission ID:-->
+<!--                <span th:text="${submission.id}">0</span>-->
+<!--            </p>-->
+<!--        </div>-->
+
+        <!-- ACTION -->
+        <a th:href="@{/problem/{id}(id=${submission.problem.id})}"
+           class="bg-emerald-600 hover:bg-emerald-700 text-white px-6 py-3 rounded-lg font-bold">
+            Làm lại
+        </a>
+    </div>
+
+<!--    &lt;!&ndash; STATS &ndash;&gt;-->
+<!--    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-6">-->
+
+<!--        <div class="bg-white rounded-lg p-4 text-center shadow">-->
+<!--            <p class="text-xs text-slate-400 uppercase">Time</p>-->
+<!--            <p class="font-bold text-lg"-->
+<!--               th:text="${submission.time != null ? submission.time + ' ms' : '&#45;&#45;'}">-->
+<!--                &#45;&#45;-->
+<!--            </p>-->
+<!--        </div>-->
+
+<!--        <div class="bg-white rounded-lg p-4 text-center shadow">-->
+<!--            <p class="text-xs text-slate-400 uppercase">Memory</p>-->
+<!--            <p class="font-bold text-lg"-->
+<!--               th:text="${submission.memory != null ? submission.memory + ' KB' : '&#45;&#45;'}">-->
+<!--                &#45;&#45;-->
+<!--            </p>-->
+<!--        </div>-->
+
+<!--        <div class="bg-white rounded-lg p-4 text-center shadow">-->
+<!--            <p class="text-xs text-slate-400 uppercase">Language</p>-->
+<!--            <p class="font-bold text-lg">Java 17</p>-->
+<!--        </div>-->
+
+<!--        <div class="bg-white rounded-lg p-4 text-center shadow">-->
+<!--            <p class="text-xs text-slate-400 uppercase">User</p>-->
+<!--            <p class="font-bold text-lg"-->
+<!--               th:text="${submission.user.name}">-->
+<!--                user-->
+<!--            </p>-->
+<!--        </div>-->
+
+    </div>
+
+    <!-- SOURCE CODE -->
+    <div class="mt-8 bg-[#1e1e1e] rounded-xl shadow overflow-hidden">
+
+        <div class="px-6 py-3 bg-[#252526] text-slate-300 text-sm font-bold flex justify-between">
+            <span><i class="fab fa-java mr-2"></i>Source Code</span>
+            <button onclick="copyCode()" class="text-xs hover:text-emerald-400">
+                Copy
+            </button>
+        </div>
+
+        <pre class="p-6 overflow-x-auto text-sm text-emerald-400">
+<code id="code" th:text="${submission.sourceCode}">// code here</code>
+        </pre>
+    </div>
+
+</main>
+
+<script>
+    function copyCode() {
+        const text = document.getElementById("code").innerText;
+        navigator.clipboard.writeText(text);
+        alert("Đã sao chép code");
+    }
+</script>
+
+</body>
+</html>

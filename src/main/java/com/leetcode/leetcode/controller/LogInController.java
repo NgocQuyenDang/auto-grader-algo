@@ -1,5 +1,7 @@
 package com.leetcode.leetcode.controller;
 
+import com.leetcode.leetcode.entity.User;
+import com.leetcode.leetcode.repository.UserRepository;
 import com.leetcode.leetcode.service.LogInService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +14,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class LogInController {
     @Autowired
     LogInService logInService;
+
+    @Autowired
+    UserRepository userRepository;
 
     @GetMapping("/home")
     public String home() {
@@ -26,7 +31,8 @@ public class LogInController {
     @PostMapping("/login")
     public String checkLogIn(@RequestParam String username, @RequestParam String password, HttpSession session) {
         if (logInService.verify(username, password)) {
-            session.setAttribute("user", username);
+            User user = userRepository.findByName(username).orElseThrow(() -> new RuntimeException("User not found"));
+            session.setAttribute("user", user);
             return "redirect:/home";
         } else {
             return "redirect:/login?error=true";

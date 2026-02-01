@@ -54,7 +54,7 @@
                     <div class="text-right">
                         <p class="text-[10px] text-gray-400 uppercase font-bold tracking-wider">Trạng thái</p>
                         <p class="text-sm font-bold text-emerald-600"
-                           th:text="${session.user != null ? session.user : 'Khách'}">Username</p>
+                           th:text="${session.user != null ? session.user.getName() : 'Khách'}">Username</p>
                     </div>
                     <div class="w-10 h-10 bg-emerald-100 border-2 border-emerald-200 rounded-full flex items-center justify-center text-emerald-700 font-black shadow-inner">
                         <span th:text="${session.user != null ? #strings.substring(session.user,0,1).toUpperCase() : 'G'}">U</span>

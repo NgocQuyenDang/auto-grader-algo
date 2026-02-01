@@ -24,6 +24,6 @@ public class LogInService {
         if (user.isPresent() &&  passwordEncoder.matches(password, user.get().getPassword())) {
             return true;
         }
-        return true;
+        return false;
     }
 }

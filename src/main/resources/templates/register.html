@@ -1,158 +1,88 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LeetCode Mini - Register</title>
+    <title>Học code - Đăng ký</title>
     <link rel="icon" href="/mainlogo.jpg">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        /* Reset & Base */
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', 'Segoe UI', sans-serif; }
-
-        body {
-            height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            /* Nền trắng xám nhạt có độ sâu nhẹ */
-            background: radial-gradient(circle at center, #ffffff 0%, #f0f2f5 100%);
-        }
-
-        .register-container {
-            background: #ffffff;
-            padding: 40px;
-            border-radius: 20px;
-            /* Đổ bóng mềm mại tạo chiều sâu */
-            box-shadow: 0 15px 35px rgba(0,0,0,0.05);
-            border: 1px solid #e0e0e0;
-            width: 380px;
-            text-align: center;
-            position: relative;
-            overflow: hidden;
-        }
-
-        /* Vệt sáng xanh lá ở góc trên */
-        .register-container::before {
-            content: "";
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 3px;
-            background: linear-gradient(90deg, transparent, #4caf50, transparent);
-        }
-
-        .register-container h2 {
-            margin-bottom: 30px;
-            color: #2e7d32; /* Xanh lá đậm */
-            font-size: 28px;
-            font-weight: 700;
-            letter-spacing: -0.5px;
-        }
-
-        .register-container input {
-            width: 100%;
-            padding: 14px 16px;
-            margin: 8px 0;
-            border-radius: 10px;
-            background: #f9f9f9;
-            border: 1px solid #ddd;
-            color: #333;
-            outline: none;
-            font-size: 15px;
-            transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        /* Focus đổi sang màu xanh lá tươi */
-        .register-container input:focus {
-            border-color: #4caf50;
-            background: #ffffff;
-            box-shadow: 0 0 0 4px rgba(76, 175, 80, 0.1);
-        }
-
-        .register-container button {
-            width: 100%;
-            padding: 14px;
-            margin-top: 25px;
-            border: none;
-            border-radius: 10px;
-            background: #4caf50; /* Nút xanh chữ trắng */
-            color: #ffffff;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: 0.3s ease;
-        }
-
-        .register-container button:hover {
-            background: #43a047;
-            transform: scale(1.02);
-            box-shadow: 0 5px 15px rgba(76, 175, 80, 0.3);
-        }
-
-        .error-message, .success-message {
-            margin-top: 15px;
-            font-size: 13px;
-            padding: 10px;
-            border-radius: 6px;
-            display: none;
-        }
-
-        .error-message {
-            color: #d32f2f;
-            background: rgba(211, 47, 47, 0.05);
-            border: 1px solid rgba(211, 47, 47, 0.1);
-        }
-
-        .success-message {
-            color: #2e7d32;
-            background: rgba(46, 125, 50, 0.05);
-            border: 1px solid rgba(46, 125, 50, 0.1);
-        }
-
-        .success-message a { color: #4caf50; font-weight: bold; text-decoration: none; }
-        .success-message a:hover { text-decoration: underline; }
-
-        .register-footer {
-            margin-top: 25px;
-            font-size: 14px;
-            color: #666;
-        }
-
-        .register-footer a {
-            color: #2e7d32;
-            text-decoration: none;
-            font-weight: 600;
-            transition: 0.3s;
-        }
-
-        .register-footer a:hover {
-            color: #1b5e20;
-            text-decoration: underline;
-        }
+        * { font-family: 'Inter', 'Segoe UI', sans-serif; }
     </style>
 </head>
-<body>
-<div class="register-container">
-    <h2>Create Account</h2>
-    <form id="registerForm" method="POST" action="/register">
-        <input type="text" name="username" placeholder="Username" required>
-        <input type="password" name="password" placeholder="Password" required>
-        <input type="password" name="confirmPassword" placeholder="Confirm Password" required>
-        <button type="submit">Get Started</button>
-        <div class="error-message" id="errorMsg">Error: User already exists or passwords do not match</div>
-        <div class="success-message" id="successMsg">Registration successful! You can now <a href="/login">login</a>.</div>
-    </form>
-    <div class="register-footer">
-        Already have an account? <a href="/login">Login</a>
+<body class="bg-gray-50 text-slate-800 h-screen flex items-center justify-center">
+
+<div class="w-full max-w-md p-6">
+    <div class="bg-white rounded-3xl shadow-xl shadow-emerald-100/50 border border-gray-100 p-10 relative overflow-hidden">
+
+        <div class="absolute top-0 left-0 w-full h-1.5 bg-emerald-500"></div>
+
+        <div class="flex items-center justify-center gap-3 mb-8">
+            <div class="w-9 h-9 bg-emerald-500 rounded-md shadow-lg shadow-emerald-500/50"></div>
+            <span class="text-2xl font-bold text-emerald-900">Học code</span>
+        </div>
+
+        <div class="text-center mb-8">
+            <h1 class="text-xl font-bold text-slate-900">Tạo tài khoản mới</h1>
+            <p class="text-slate-400 text-sm mt-1">Gia nhập cộng đồng lập trình viên</p>
+        </div>
+
+        <form id="registerForm" method="POST" action="/register" class="space-y-4">
+            <div class="space-y-1">
+                <label class="block text-[10px] font-black text-emerald-800 uppercase tracking-widest ml-1">Username</label>
+                <input type="text" name="username" placeholder="Nhập tên người dùng" required
+                       class="w-full px-5 py-3.5 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition-all placeholder:text-gray-300">
+            </div>
+
+            <div class="space-y-1">
+                <label class="block text-[10px] font-black text-emerald-800 uppercase tracking-widest ml-1">Password</label>
+                <input type="password" name="password" placeholder="Nhập mật khẩu" required
+                       class="w-full px-5 py-3.5 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition-all placeholder:text-gray-300">
+            </div>
+
+            <div class="space-y-1">
+                <label class="block text-[10px] font-black text-emerald-800 uppercase tracking-widest ml-1">Confirm Password</label>
+                <input type="password" name="confirmPassword" placeholder="Xác nhận mật khẩu" required
+                       class="w-full px-5 py-3.5 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition-all placeholder:text-gray-300">
+            </div>
+
+            <button type="submit"
+                    class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3.5 rounded-xl shadow-md shadow-emerald-100 transition transform hover:-translate-y-0.5 active:scale-[0.98] mt-4">
+                Get Started
+            </button>
+
+            <div class="hidden mt-4 p-3 bg-red-50 border border-red-100 text-red-600 rounded-lg text-xs font-semibold flex items-center gap-2"
+                 id="errorMsg">
+                <i class="fas fa-exclamation-circle"></i>
+                Error: User already exists or passwords do not match
+            </div>
+
+            <div class="hidden mt-4 p-3 bg-emerald-50 border border-emerald-100 text-emerald-700 rounded-lg text-xs font-semibold flex items-center gap-2"
+                 id="successMsg">
+                <i class="fas fa-check-circle"></i>
+                Đăng ký thành công, bây giờ bạn có thể <a href="/login" class="underline font-bold ml-1">đăng nhập</a>.
+            </div>
+        </form>
+
+        <div class="mt-8 pt-6 border-t border-gray-50 text-center">
+            <p class="text-sm text-slate-400 font-medium">
+                Đã có tài khoản?
+                <a href="/login" class="text-emerald-600 hover:text-emerald-800 font-bold ml-1">Đăng nhập</a>
+            </p>
+        </div>
     </div>
 </div>
 
 <script>
     const urlParams = new URLSearchParams(window.location.search);
     if(urlParams.get('error')) {
-        document.getElementById('errorMsg').style.display = 'block';
+        document.getElementById('errorMsg').classList.remove('hidden');
     }
     if(urlParams.get('success')) {
-        document.getElementById('successMsg').style.display = 'block';
+        document.getElementById('successMsg').classList.remove('hidden');
     }
 </script>
+
 </body>
 </html>
