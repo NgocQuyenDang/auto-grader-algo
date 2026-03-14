@@ -19,6 +19,9 @@ public class Submission {
     @JoinColumn(name = "user_id")
     private User user;
 
+    @Column(columnDefinition = "TEXT")
+    private String result;
+
     public Submission() {
 
     }
@@ -53,5 +56,13 @@ public class Submission {
 
     public void setProblem(Problem problem) {
         this.problem = problem;
+    }
+
+    public String getResult() {
+        return result;
+    }
+
+    public void setResult(String result) {
+        this.result = result;
     }
 }

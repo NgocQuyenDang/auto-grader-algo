@@ -15,6 +15,12 @@ public class Problem {
     @Column(columnDefinition = "TEXT")
     private String description;
 
+    @Column(columnDefinition = "TEXT")
+    private String input;
+
+    @Column(columnDefinition = "TEXT")
+    private String output;
+    
     public Problem() {
 
     }

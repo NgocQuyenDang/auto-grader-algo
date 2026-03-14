@@ -21,7 +21,9 @@ public class SecurityConfig {
         http
             .csrf(csrf -> csrf.disable()) // Tắt để tránh lỗi khi nộp bài/đăng ký
             .authorizeHttpRequests(auth -> auth
-                .anyRequest().permitAll() // Cho phép truy cập tất cả mà không cần login của Spring
+                            .requestMatchers("/login", "/register").permitAll()
+                            .requestMatchers("/admin/**").authenticated()
+                            .anyRequest().permitAll()
             );
         return http.build();
     }
