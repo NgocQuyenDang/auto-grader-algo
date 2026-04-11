@@ -30,6 +30,9 @@ public class SubmitController {
     @PostMapping("/problem/{id}/submit")
     public String submit(@PathVariable("id") long id, @RequestParam("sourceCode") String source, HttpSession session) {
         User cur = (User) session.getAttribute("user");
+        if (cur == null) {
+            return "redirect:/login";
+        }
         Problem problem = problemRepository.findById(id).orElseThrow(() -> new RuntimeException("Problem not found"));
 
 

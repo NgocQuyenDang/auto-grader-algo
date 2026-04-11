@@ -22,7 +22,6 @@ public class SecurityConfig {
             .csrf(csrf -> csrf.disable()) // Tắt để tránh lỗi khi nộp bài/đăng ký
             .authorizeHttpRequests(auth -> auth
                             .requestMatchers("/login", "/register").permitAll()
-                            .requestMatchers("/admin/**").authenticated()
                             .anyRequest().permitAll()
             );
         return http.build();

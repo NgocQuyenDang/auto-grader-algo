@@ -51,3 +51,5 @@ application-prod.yml
 *.log
 logs/
 
+leetcode-simulator/
+

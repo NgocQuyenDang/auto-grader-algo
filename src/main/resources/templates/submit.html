@@ -42,7 +42,7 @@
 
         <div class="flex items-center gap-4">
             <span class="text-[10px] text-slate-500 font-bold uppercase tracking-widest hidden sm:block"
-                  th:text="'User: ' + ${session.user != null ? session.user : 'Guest'}"></span>
+                  th:text="'User: ' + ${session.user != null ? session.user.getName() : 'Guest'}"></span>
 
             <a th:href="@{/problems}" class="text-xs text-slate-400 hover:text-white transition font-medium">Danh sách bài</a>
 
@@ -95,24 +95,80 @@
     <input type="hidden" name="languageId" value="62">
 </form>
 
+<!--<script>-->
+<!--    let editor;-->
+
+<!--    require.config({ paths: { vs: 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.44.0/min/vs' } });-->
+
+<!--    require(['vs/editor/editor.main'], function () {-->
+<!--        editor = monaco.editor.create(document.getElementById('editorContainer'), {-->
+<!--            value: [-->
+<!--                'import java.util.*;',-->
+<!--                '',-->
+<!--                'public class Main {',-->
+<!--                '    public static void main(String[] args) {', ,-->
+<!--                '        // Write your code here',-->
+<!--                '        ',-->
+<!--                '    }',-->
+<!--                '}'-->
+<!--            ].join('\n'),-->
+<!--            language: 'java',-->
+<!--            theme: 'vs-dark',-->
+<!--            fontSize: 15,-->
+<!--            fontFamily: "'JetBrains Mono', monospace",-->
+<!--            automaticLayout: true,-->
+<!--            minimap: { enabled: false },-->
+<!--            padding: { top: 20 },-->
+<!--            roundedSelection: true,-->
+<!--            cursorSmoothCaretAnimation: "on",-->
+<!--            bracketPairColorization: { enabled: true }-->
+<!--        });-->
+
+<!--        document.querySelector('.editor-loading').style.display = 'none';-->
+
+<!--        // Shortcut Ctrl + Enter để nộp bài nhanh-->
+<!--        editor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyCode.Enter, function() {-->
+<!--            handleSubmit();-->
+<!--        });-->
+<!--    });-->
+
+<!--    function handleSubmit() {-->
+<!--        // Lấy dữ liệu từ Editor-->
+<!--        const codeValue = editor.getValue();-->
+
+<!--        if (codeValue.trim().length < 5) {-->
+<!--            alert("Vui lòng nhập mã nguồn trước khi nộp bài!");-->
+<!--            return;-->
+<!--        }-->
+
+<!--        // Đổ dữ liệu vào textarea của Form Thymeleaf-->
+<!--        document.getElementById('hiddenSourceCode').value = codeValue;-->
+
+<!--        // Gửi Form về @PostMapping của Controller-->
+<!--        document.getElementById('submitForm').submit();-->
+<!--    }-->
+<!--</script>-->
 <script>
     let editor;
 
     require.config({ paths: { vs: 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.44.0/min/vs' } });
 
     require(['vs/editor/editor.main'], function () {
+
+        const savedCode = localStorage.getItem("webjudge_code");
+
         editor = monaco.editor.create(document.getElementById('editorContainer'), {
-            value: [
+            value: savedCode ? savedCode : [
                 'import java.util.*;',
                 '',
                 'public class Main {',
                 '    public static void main(String[] args) {',
-                '        Scanner sc = new Scanner(System.in);',
                 '        // Write your code here',
                 '        ',
                 '    }',
                 '}'
             ].join('\n'),
+
             language: 'java',
             theme: 'vs-dark',
             fontSize: 15,
@@ -127,25 +183,60 @@
 
         document.querySelector('.editor-loading').style.display = 'none';
 
-        // Shortcut Ctrl + Enter để nộp bài nhanh
+        editor.focus();
+
+        // cập nhật Ln Col
+        const posLabel = document.querySelector('.font-mono span:last-child');
+
+        editor.onDidChangeCursorPosition(function(e) {
+            const pos = e.position;
+            posLabel.textContent = "Ln " + pos.lineNumber + ", Col " + pos.column;
+        });
+
+        // auto save code
+        editor.onDidChangeModelContent(() => {
+            localStorage.setItem("webjudge_code", editor.getValue());
+        });
+
+        // Ctrl + Enter submit
         editor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyCode.Enter, function() {
             handleSubmit();
         });
+
+        // Ctrl + S submit
+        editor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyCode.KeyS, function() {
+            handleSubmit();
+        });
+
     });
 
+    function showToast(message) {
+        const toast = document.createElement("div");
+
+        toast.className = "fixed bottom-6 right-6 bg-emerald-600 text-white px-4 py-2 rounded shadow-lg text-sm";
+
+        toast.innerText = message;
+
+        document.body.appendChild(toast);
+
+        setTimeout(() => {
+            toast.remove();
+        }, 2000);
+    }
+
     function handleSubmit() {
-        // Lấy dữ liệu từ Editor
+
         const codeValue = editor.getValue();
 
         if (codeValue.trim().length < 5) {
-            alert("Vui lòng nhập mã nguồn trước khi nộp bài!");
+            showToast("Code quá ngắn!");
             return;
         }
 
-        // Đổ dữ liệu vào textarea của Form Thymeleaf
         document.getElementById('hiddenSourceCode').value = codeValue;
 
-        // Gửi Form về @PostMapping của Controller
+        showToast("Đang nộp bài...");
+
         document.getElementById('submitForm').submit();
     }
 </script>
