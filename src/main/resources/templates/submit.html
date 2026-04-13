@@ -95,59 +95,6 @@
     <input type="hidden" name="languageId" value="62">
 </form>
 
-<!--<script>-->
-<!--    let editor;-->
-
-<!--    require.config({ paths: { vs: 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.44.0/min/vs' } });-->
-
-<!--    require(['vs/editor/editor.main'], function () {-->
-<!--        editor = monaco.editor.create(document.getElementById('editorContainer'), {-->
-<!--            value: [-->
-<!--                'import java.util.*;',-->
-<!--                '',-->
-<!--                'public class Main {',-->
-<!--                '    public static void main(String[] args) {', ,-->
-<!--                '        // Write your code here',-->
-<!--                '        ',-->
-<!--                '    }',-->
-<!--                '}'-->
-<!--            ].join('\n'),-->
-<!--            language: 'java',-->
-<!--            theme: 'vs-dark',-->
-<!--            fontSize: 15,-->
-<!--            fontFamily: "'JetBrains Mono', monospace",-->
-<!--            automaticLayout: true,-->
-<!--            minimap: { enabled: false },-->
-<!--            padding: { top: 20 },-->
-<!--            roundedSelection: true,-->
-<!--            cursorSmoothCaretAnimation: "on",-->
-<!--            bracketPairColorization: { enabled: true }-->
-<!--        });-->
-
-<!--        document.querySelector('.editor-loading').style.display = 'none';-->
-
-<!--        // Shortcut Ctrl + Enter để nộp bài nhanh-->
-<!--        editor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyCode.Enter, function() {-->
-<!--            handleSubmit();-->
-<!--        });-->
-<!--    });-->
-
-<!--    function handleSubmit() {-->
-<!--        // Lấy dữ liệu từ Editor-->
-<!--        const codeValue = editor.getValue();-->
-
-<!--        if (codeValue.trim().length < 5) {-->
-<!--            alert("Vui lòng nhập mã nguồn trước khi nộp bài!");-->
-<!--            return;-->
-<!--        }-->
-
-<!--        // Đổ dữ liệu vào textarea của Form Thymeleaf-->
-<!--        document.getElementById('hiddenSourceCode').value = codeValue;-->
-
-<!--        // Gửi Form về @PostMapping của Controller-->
-<!--        document.getElementById('submitForm').submit();-->
-<!--    }-->
-<!--</script>-->
 <script>
     let editor;
 
@@ -177,7 +124,11 @@
             minimap: { enabled: false },
             padding: { top: 20 },
             roundedSelection: true,
+            smoothScrolling: true,
+            cursorBlinking: "smooth",
             cursorSmoothCaretAnimation: "on",
+            fontLigatures: true,
+            scrollBeyondLastLine: false,
             bracketPairColorization: { enabled: true }
         });
 

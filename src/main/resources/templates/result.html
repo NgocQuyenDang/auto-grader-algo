@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="vi" xmlns:th="http://www.thymeleaf.org">
 <head>
-
     <meta charset="UTF-8">
     <title>Kết quả nộp bài | WebJudge</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -14,56 +13,52 @@
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono&display=swap" rel="stylesheet">
 
     <style>
-        .code-font{
-            font-family:'JetBrains Mono', monospace;
+        .code-font {
+            font-family: 'JetBrains Mono', monospace;
         }
     </style>
-
 </head>
 
 <body class="bg-slate-100 min-h-screen text-slate-800">
 
+<!-- HEADER -->
 <header class="h-14 bg-white border-b flex items-center justify-between px-8">
-
-<span class="font-black text-emerald-600 text-lg">
-<i class="fa-solid fa-code mr-2"></i>WebJudge
-</span>
+    <span class="font-black text-emerald-600 text-lg">
+        <i class="fa-solid fa-code mr-2"></i>WebJudge
+    </span>
 
     <a th:href="@{/problems}"
        class="text-sm text-slate-500 hover:text-emerald-600">
         Danh sách bài
     </a>
-
 </header>
 
-
-<main class="max-w-5xl mx-auto p-8">
+<main class="max-w-3xl mx-auto p-8">
 
     <!-- RESULT CARD -->
-
     <div class="bg-white rounded-xl shadow p-6 mb-6">
 
         <div class="flex justify-between items-center">
-
             <h2 class="text-lg font-bold">Submission Result</h2>
 
-            <span
-                    th:text="${submission.result}"
-                    th:class="${submission.result == 'AC'}
-? 'bg-emerald-100 text-emerald-700 px-3 py-1 rounded-full font-bold'
-: 'bg-rose-100 text-rose-700 px-3 py-1 rounded-full font-bold'">
+            <span th:text="${result.result}"
+                  th:switch="${result.result}"
+                  class="px-3 py-1 rounded-full font-bold">
 
-AC
+    <span th:case="'AC'" class="bg-emerald-100 text-emerald-700"></span>
+    <span th:case="'WA'" class="bg-rose-100 text-rose-700"></span>
+    <span th:case="'TLE'" class="bg-yellow-100 text-yellow-700"></span>
+    <span th:case="*"
+          class="bg-slate-200 text-slate-700"></span>
 
 </span>
-
         </div>
 
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-4 text-sm">
+        <div class="grid grid-cols-2 gap-4 mt-4 text-sm">
 
             <div>
                 <span class="text-slate-500">Problem</span>
-                <div class="font-bold" th:text="${submission.problem.title}">
+                <div class="font-bold" th:text="${problem.title}">
                     Two Sum
                 </div>
             </div>
@@ -73,208 +68,118 @@ AC
                 <div class="font-bold">Java</div>
             </div>
 
-            <div>
-                <span class="text-slate-500">Runtime</span>
-                <div class="font-bold" th:text="${submission.runtime}">
-                    12 ms
-                </div>
-            </div>
+        </div>
 
-            <div>
-                <span class="text-slate-500">Memory</span>
-                <div class="font-bold" th:text="${submission.memory}">
-                    14 MB
-                </div>
-            </div>
-
+        <!-- STATS -->
+        <div class="mt-4 text-sm text-slate-500">
+            <span th:text="${#lists.size(result.testcases)} + ' testcases'"></span>
         </div>
 
     </div>
 
 
-    <!-- TESTCASE RESULT -->
+    <!-- FAILED TESTCASE -->
+    <div class="bg-white rounded-xl shadow p-6 mb-6"
+         th:if="${result.result != 'AC'}">
 
-    <div class="bg-white rounded-xl shadow p-6 mb-6">
+        <h3 class="font-bold mb-4 text-rose-600">
+            Failed Testcase
+        </h3>
 
-        <h3 class="font-bold mb-4">Testcase Results</h3>
+        <!-- chỉ lấy test fail đầu tiên -->
+        <div th:each="t, iter : ${result.testcases}"
+             th:if="${t.status != 'Passed'} and ${iter.index == 0}"
+             th:object="${t}">
 
-        <table class="w-full text-sm">
+            <div class="code-font text-sm space-y-4">
 
-            <thead class="text-left text-slate-500 border-b">
-
-            <tr>
-
-                <th class="py-2">Test</th>
-                <th>Status</th>
-                <th>Runtime</th>
-
-            </tr>
-
-            </thead>
-
-            <tbody>
-
-            <tr th:each="t : ${submission.testcases}"
-                class="border-b">
-
-                <td class="py-2"
-                    th:text="${t.index}">
-                    1
-                </td>
-
-                <td>
-
-<span
-        th:text="${t.status}"
-        th:class="${t.status=='Passed'}
-? 'text-emerald-600 font-bold'
-: 'text-rose-600 font-bold'">
-
-Passed
-
-</span>
-
-                </td>
-
-                <td th:text="${t.runtime}">
-                    3 ms
-                </td>
-
-            </tr>
-
-            </tbody>
-
-        </table>
-
-    </div>
-
-
-    <!-- OUTPUT COMPARISON -->
-
-    <div class="bg-white rounded-xl shadow p-6 mb-6">
-
-        <h3 class="font-bold mb-4">Output Comparison</h3>
-
-        <div class="grid md:grid-cols-2 gap-6 text-sm code-font">
-
-            <div>
-
-                <div class="text-slate-500 mb-2">
-                    Expected Output
+                <div>
+                    <span class="text-slate-500">Input</span>
+                    <pre class="bg-slate-100 p-4 rounded mt-1"
+                         th:text="*{input}"></pre>
                 </div>
 
-                <pre class="bg-slate-100 p-4 rounded"
-                     th:text="${submission.expectedOutput}">
-5
-</pre>
-
-            </div>
-
-            <div>
-
-                <div class="text-slate-500 mb-2">
-                    Your Output
+                <div>
+                    <span class="text-slate-500">Expected Output</span>
+                    <pre class="bg-slate-100 p-4 rounded mt-1"
+                         th:text="*{expectedOutput}"></pre>
                 </div>
 
-                <pre class="bg-slate-100 p-4 rounded"
-                     th:text="${submission.actualOutput}">
-4
-</pre>
+                <div>
+                    <span class="text-slate-500">Your Output</span>
+                    <pre class="bg-slate-100 p-4 rounded mt-1"
+                         th:text="*{actualOutput}"></pre>
+                </div>
 
             </div>
-
         </div>
 
     </div>
 
 
     <!-- SOURCE CODE -->
-
     <div class="bg-[#1e1e1e] rounded-xl shadow overflow-hidden">
 
-        <div class="px-6 py-3 bg-[#252526] text-slate-300
-text-sm font-bold flex justify-between">
-
-<span>
-<i class="fab fa-java mr-2"></i>
-Source Code
-</span>
+        <div class="px-6 py-3 bg-[#252526] text-slate-300 text-sm font-bold flex justify-between">
+            <span>
+                <i class="fab fa-java mr-2"></i>
+                Source Code
+            </span>
 
             <button onclick="copyCode()"
                     class="text-xs hover:text-emerald-400">
-
                 <i class="fa-regular fa-copy mr-1"></i>
                 Copy
-
             </button>
-
         </div>
 
-
         <pre class="p-6 overflow-x-auto text-sm text-emerald-400 code-font">
-<code id="code" th:text="${submission.sourceCode}">
-</code>
+<code id="code" th:text="${sourceCode}"></code>
 </pre>
 
     </div>
 
 
-    <!-- ACTION BUTTONS -->
-
+    <!-- ACTION -->
     <div class="flex gap-4 mt-6">
 
-        <a th:href="@{/problem/{id}(id=${submission.problem.id})}"
+        <a th:href="@{/problem/{id}(id=${problem.id})}"
            class="bg-emerald-600 hover:bg-emerald-700
-text-white px-6 py-3 rounded-lg font-bold">
-
+           text-white px-6 py-3 rounded-lg font-bold">
             <i class="fa-solid fa-rotate-left mr-2"></i>
             Làm lại
-
         </a>
 
         <a th:href="@{/problems}"
            class="bg-slate-200 hover:bg-slate-300
-text-slate-700 px-6 py-3 rounded-lg font-bold">
-
+           text-slate-700 px-6 py-3 rounded-lg font-bold">
             Danh sách bài
-
         </a>
 
     </div>
-
 
 </main>
 
 
 <!-- TOAST -->
-
 <div id="toast"
      class="hidden fixed bottom-6 right-6
-bg-emerald-600 text-white px-4 py-2 rounded shadow">
-
+     bg-emerald-600 text-white px-4 py-2 rounded shadow">
     Đã sao chép code
-
 </div>
 
-
 <script>
-
-    function copyCode(){
-
-        const text=document.getElementById("code").innerText
-
+    function copyCode() {
+        const text = document.getElementById("code").innerText
         navigator.clipboard.writeText(text)
 
-        const toast=document.getElementById("toast")
-
+        const toast = document.getElementById("toast")
         toast.classList.remove("hidden")
 
-        setTimeout(()=>{
+        setTimeout(() => {
             toast.classList.add("hidden")
-        },2000)
-
+        }, 2000)
     }
-
 </script>
 
 </body>
