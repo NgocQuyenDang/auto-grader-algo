@@ -30,6 +30,7 @@ public class JudgeController {
         }
         Problem problem = pr.findById(id)
                 .orElseThrow(() -> new RuntimeException("Problem not found"));
+
         SubmissionResult result = submitService.submit(sourceCode, cur, problem);
 
         model.addAttribute("result", result);

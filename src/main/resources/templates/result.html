@@ -41,17 +41,12 @@
         <div class="flex justify-between items-center">
             <h2 class="text-lg font-bold">Submission Result</h2>
 
-            <span th:text="${result.result}"
-                  th:switch="${result.result}"
-                  class="px-3 py-1 rounded-full font-bold">
-
-    <span th:case="'AC'" class="bg-emerald-100 text-emerald-700"></span>
-    <span th:case="'WA'" class="bg-rose-100 text-rose-700"></span>
-    <span th:case="'TLE'" class="bg-yellow-100 text-yellow-700"></span>
-    <span th:case="*"
-          class="bg-slate-200 text-slate-700"></span>
-
-</span>
+            <div th:switch="${result.result}">
+                <span th:case="'TLE'" class="px-3 py-1 rounded-full font-bold bg-yellow-100 text-yellow-700">TLE</span>
+                <span th:case="'AC'"  class="px-3 py-1 rounded-full font-bold bg-emerald-100 text-emerald-700">AC</span>
+                <span th:case="'WA'"  class="px-3 py-1 rounded-full font-bold bg-rose-100 text-rose-700">WA</span>
+                <span th:case="*"     class="px-3 py-1 rounded-full font-bold bg-slate-200 text-slate-700" th:text="${result.result}"></span>
+            </div>
         </div>
 
         <div class="grid grid-cols-2 gap-4 mt-4 text-sm">
@@ -59,7 +54,7 @@
             <div>
                 <span class="text-slate-500">Problem</span>
                 <div class="font-bold" th:text="${problem.title}">
-                    Two Sum
+
                 </div>
             </div>
 
@@ -88,8 +83,9 @@
 
         <!-- chỉ lấy test fail đầu tiên -->
         <div th:each="t, iter : ${result.testcases}"
-             th:if="${t.status != 'Passed'} and ${iter.index == 0}"
-             th:object="${t}">
+             th:if="${t.status != 'Passed' and !iter.current.status.equals('Passed')}"
+             th:object="${t}"
+             th:unless="${#bools.isTrue(shownFirst)}">
 
             <div class="code-font text-sm space-y-4">
 

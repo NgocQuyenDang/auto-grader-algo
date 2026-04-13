@@ -109,7 +109,7 @@ public class JudgeService {
 
             String output = run(sourceCode, testcase.getInput());
 
-            if (output.equals("Time Limit Exceeded")) {
+            if (output.trim().contains("Time Limit Exceeded")) {
                 hasTLE = true;
 
                 results.add(new TestcaseResult(
@@ -117,9 +117,8 @@ public class JudgeService {
                         "TLE",
                         testcase.getInput(),
                         testcase.getExpectedOutput(),
-                        ""
+                        "Time Limit Exceeded"
                 ));
-
             } else if (!normalize(output).equals(normalize(testcase.getExpectedOutput()))) {
                 hasWA = true;
 
