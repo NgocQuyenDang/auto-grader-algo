@@ -7,8 +7,6 @@ public class TestcaseResult {
     private String expectedOutput;
     private String actualOutput;
 
-    // constructor + getter
-
     public TestcaseResult(int index, String status, String input, String expectedOutput, String actualOutput) {
         this.index = index;
         this.status = status;
