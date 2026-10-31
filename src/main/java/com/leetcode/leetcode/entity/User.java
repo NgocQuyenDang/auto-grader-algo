@@ -15,13 +15,24 @@ public class User {
     @Column(nullable = false)
     private String password;
 
+    /**
+     * Vai trò phân quyền: ADMIN hoặc MEMBER.
+     * Không dùng username để suy ra quyền.
+     */
+    @Column(nullable = false, columnDefinition = "VARCHAR(32) NOT NULL DEFAULT 'MEMBER'")
+    private String role = ROLE_MEMBER;
+
+    public static final String ROLE_ADMIN = "ADMIN";
+    public static final String ROLE_MEMBER = "MEMBER";
+
     public User() {
 
     }
 
-    public User(String name, String password) {
+    public User(String name, String password, String role) {
         this.name = name;
         this.password = password;
+        this.role = role;
     }
 
     public long getId() {
@@ -46,5 +57,17 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+
+    public boolean isAdmin() {
+        return ROLE_ADMIN.equals(role);
     }
 }

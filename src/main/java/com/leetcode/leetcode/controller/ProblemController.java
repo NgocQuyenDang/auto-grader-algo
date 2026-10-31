@@ -1,7 +1,9 @@
 package com.leetcode.leetcode.controller;
 
 import com.leetcode.leetcode.entity.Problem;
+import com.leetcode.leetcode.entity.User;
 import com.leetcode.leetcode.repository.ProblemRepository;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,12 +28,21 @@ public class ProblemController {
     }
 
     @GetMapping("/admin/add-problem")
-    public String showAddProblem() {
+    public String showAddProblem(HttpSession session) {
+        String deny = denyUnlessAdmin(session);
+        if (deny != null) {
+            return deny;
+        }
         return "add-problem";
     }
 
     @PostMapping("/admin/add-problem")
-    public String addProblem(@RequestParam String title, @RequestParam String category, @RequestParam String description) {
+    public String addProblem(@RequestParam String title, @RequestParam String category, @RequestParam String description,
+                             HttpSession session) {
+        String deny = denyUnlessAdmin(session);
+        if (deny != null) {
+            return deny;
+        }
         if (probrepository.findByTitle(title).isPresent() || probrepository.findByDescription(description).isPresent()) {
             return "redirect:/admin/add-problem?errorMessage=true";
         } else {
@@ -39,6 +50,20 @@ public class ProblemController {
             probrepository.save(problem);
         }
         return "redirect:/problems";
+    }
+
+    /**
+     * Cửa phân quyền: HTML chỉ ẩn nút; chỗ này mới quyết định có được vào/ghi DB không.
+     */
+    private String denyUnlessAdmin(HttpSession session) {
+        User user = (User) session.getAttribute("user");
+        if (user == null) {
+            return "redirect:/login";
+        }
+        if (!user.isAdmin()) {
+            return "redirect:/problems";
+        }
+        return null;
     }
 
     @GetMapping("/problem/{id}")

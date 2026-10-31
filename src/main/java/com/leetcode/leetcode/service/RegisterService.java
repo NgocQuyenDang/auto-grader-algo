@@ -24,7 +24,7 @@ public class RegisterService {
         }
 
         String encodedPassword = bCryptPasswordEncoder.encode(password);
-        userRepository.save(new User(username, encodedPassword));
+        userRepository.save(new User(username, encodedPassword, User.ROLE_MEMBER));
 
         return true;
     }

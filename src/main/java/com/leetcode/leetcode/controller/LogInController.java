@@ -32,6 +32,11 @@ public class LogInController {
     public String checkLogIn(@RequestParam String username, @RequestParam String password, HttpSession session) {
         if (logInService.verify(username, password)) {
             User user = userRepository.findByName(username).orElseThrow(() -> new RuntimeException("User not found"));
+            // Dữ liệu cũ: user 'admin' chưa có cột role → gán ADMIN một lần. 
+            if (!user.isAdmin() && "admin".equalsIgnoreCase(user.getName())) {
+                user.setRole(User.ROLE_ADMIN);
+                user = userRepository.save(user);
+            }
             session.setAttribute("user", user);
             return "redirect:/home";
         } else {
