@@ -1,4 +1,4 @@
-<h1>LeetCode Simulator</h1>
+<h1>Algorithm Grader</h1>
 
 <p>
   <b>Demo:</b> 
@@ -34,7 +34,7 @@ the application focuses on clarity, simplicity, and educational value.
       <li>Return verdict (Accepted / Wrong Answer / Runtime Error)</li>
     </ul>
   </li>
-  <li>Deployment: Docker, Ngrok</li>
+  <li>Deployment: Ngrok</li>
 </ul>
 
 <h2>Core Features</h2>
