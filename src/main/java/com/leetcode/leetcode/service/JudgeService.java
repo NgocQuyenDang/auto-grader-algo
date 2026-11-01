@@ -13,13 +13,15 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 @Service
 public class JudgeService {
 
     @Autowired
     TestCaseRepository testcaseRepository;
+
+    @Autowired
+    DockerSandbox dockerSandbox;
 
     private static final List<String> BLACKLIST = List.of(
             "Runtime", "ProcessBuilder", "Process",
@@ -47,34 +49,12 @@ public class JudgeService {
             Path codeFile = dir.resolve("Main.java");
             Files.writeString(codeFile, sourceCode);
 
-            // Compile
-            ProcessBuilder compile = new ProcessBuilder("javac", "Main.java");
-            compile.directory(dir.toFile());
-            Process process = compile.start();
-            int compileResult = process.waitFor();
-
-            if (compileResult != 0) {
-                return new String(process.getErrorStream().readAllBytes());
+            String compileOutput = dockerSandbox.compile(dir);
+            if (compileOutput != null && !compileOutput.isBlank()) {
+                return compileOutput;
             }
 
-            // Run với giới hạn RAM
-            ProcessBuilder run = new ProcessBuilder(
-                    "java", "-Xmx128m", "-Xms32m", "Main"
-            );
-            run.directory(dir.toFile());
-            Process runProcess = run.start();
-
-            runProcess.getOutputStream().write(input.getBytes());
-            runProcess.getOutputStream().flush();
-            runProcess.getOutputStream().close();
-
-            boolean finished = runProcess.waitFor(5, TimeUnit.SECONDS);
-            if (!finished) {
-                runProcess.destroyForcibly();
-                return "Time Limit Exceeded";
-            }
-
-            return new String(runProcess.getInputStream().readAllBytes());
+            return dockerSandbox.runProgram(dir, input);
 
         } catch (IOException | InterruptedException e) {
             throw new RuntimeException(e);
