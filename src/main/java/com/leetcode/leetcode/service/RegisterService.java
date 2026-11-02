@@ -15,6 +15,11 @@ public class RegisterService {
     BCryptPasswordEncoder bCryptPasswordEncoder;
 
     public boolean register(String username, String password, String confirmPassword) {
+
+        if ("admin".equalsIgnoreCase(username.trim())) {
+            return false;
+        }
+
         if (userRepository.findByName(username).isPresent()) {
             return false;
         }
